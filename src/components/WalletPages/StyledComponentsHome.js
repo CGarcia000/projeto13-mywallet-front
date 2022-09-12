@@ -20,6 +20,7 @@ const Title = styled.div`
 
 const WalletRegisters = styled.div`
     position: relative;
+    overflow: hidden;
     width: 100%;
     min-height: 68vh;
     background-color: white;

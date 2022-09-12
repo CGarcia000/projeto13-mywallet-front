@@ -1,14 +1,38 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import { ArrowUUpLeft } from "phosphor-react";
 
 import { Title, BodyForm, FormWrapper, SubmitButton } from "./StyledComponentsAddRegisters";
 
+import { UserContext } from '../../App';
+
+import { postRegister } from "../../../assets/services/requests";
+
 export function OutputRegister() {
     const [cost, setCost] = useState('');
     const [description, setDescription] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const navigate = useNavigate();
+
+    const [user] = useContext(UserContext);
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        const body = {
+            cost,
+            description,
+            date: Date.now(),
+            type: 'output',
+        }
+        postRegister(body, user.token).then(res => {
+            navigate('/home');
+        }).catch(e => {
+            console.log(e);
+        })
+    }
 
     return (
         <BodyForm>
@@ -20,7 +44,7 @@ export function OutputRegister() {
             </Title>
 
             <FormWrapper>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <input type="text" placeholder="valor" value={cost}
                         onChange={e => {
                             if (isLoading) return;

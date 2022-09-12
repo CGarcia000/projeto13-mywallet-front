@@ -4,13 +4,14 @@ import styled from "styled-components";
 export function RegisterItem({
     registerObj
 }) {
-
+    console.log('obj')
+    console.log(registerObj);
     const isOutput = registerObj.type === 'output';
 
     return (
         <RegisterDiv>
-            <Day>{registerObj.day}</Day>
-            <Name>{registerObj.name}</Name>
+            <Day>{registerObj.date}</Day>
+            <Name>{registerObj.description}</Name>
             <Cost color={isOutput ? '#C70000' : '#03AC00'}>{registerObj.cost}</Cost>
         </RegisterDiv>
     );

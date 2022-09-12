@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { SignOut, PlusCircle, MinusCircle } from "phosphor-react";
@@ -7,19 +7,38 @@ import { BodyWallet, Title, WalletRegisters, ButtonWallet } from "./StyledCompon
 
 import { Registers } from "./RegisterComponents/Registers";
 
-const account = {
-    userName: 'Cecília Garcia da Silveira',
-}
+import { UserContext } from '../App';
+
+import { getRegisters } from "../../assets/services/requests";
 
 export function Home() {
     const [noRegister, setNoRegister] = useState(false);
+    const [registers, setRegisters] = useState([]);
+    const [total, setTotal] = useState([]);
 
     const navigate = useNavigate();
+
+    const [user] = useContext(UserContext);
+
+    useEffect(() => {
+        getRegisters(user.token).then(res => {
+            setRegisters(res.data.registers);
+            setTotal(res.data.total);
+            const registerArr = res.data.registers;
+            if (registerArr.length > 0) {
+                setNoRegister(current => false);
+            } else {
+                setNoRegister(current => true);
+            }
+        }).catch(e => {
+            console.log(e);
+        })
+    }, []);
 
     return (
         <BodyWallet>
             <Title>
-                <h2>Olá, {account.userName}</h2>
+                <h2>Olá, {user.name}</h2>
                 <Link to='/'>
                     <SignOut color="white" weight="bold" size={'2rem'} />
                 </Link>
@@ -28,7 +47,7 @@ export function Home() {
             <WalletRegisters>
                 {noRegister ?
                     (<span>Não há registros de entrada ou saída</span>) :
-                    <Registers />}
+                    <Registers registersArray={registers} total={total} />}
             </WalletRegisters>
 
             <ButtonWallet>
