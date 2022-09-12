@@ -7,8 +7,6 @@ export function Registers({
     total
 }) {
     const isPositive = total.type === 'positive';
-    console.log('registers')
-    console.log(registersArray);
     return (
         <>
             <RegistersDiv>

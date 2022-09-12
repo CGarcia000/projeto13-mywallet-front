@@ -4,8 +4,6 @@ import styled from "styled-components";
 export function RegisterItem({
     registerObj
 }) {
-    console.log('obj')
-    console.log(registerObj);
     const isOutput = registerObj.type === 'output';
 
     return (
